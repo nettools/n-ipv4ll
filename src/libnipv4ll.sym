@@ -1,0 +1,19 @@
+LIBNIPV4LL_1 {
+global:
+        n_ipv4ll_config_new;
+        n_ipv4ll_config_free;
+        n_ipv4ll_config_set_ifindex;
+        n_ipv4ll_config_set_transport;
+        n_ipv4ll_config_set_mac;
+        n_ipv4ll_config_set_enumeration;
+        n_ipv4ll_config_set_timeout;
+        n_ipv4ll_config_set_requested_ip;
+        n_ipv4ll_new;
+        n_ipv4ll_free;
+        n_ipv4ll_get_fd;
+        n_ipv4ll_dispatch;
+        n_ipv4ll_pop_event;
+        n_ipv4ll_announce;
+local:
+       *;
+};
