@@ -104,8 +104,9 @@ static void test_concurrent(void) {
                 assert(n >= 0);
 
                 for (int i = 0; i < n; ++i) {
-                        Client *client = events[i].data.ptr;
                         NIpv4llEvent *event;
+
+                        client = events[i].data.ptr;
 
                         r = n_ipv4ll_dispatch(client->ipv4ll);
                         if (r)
