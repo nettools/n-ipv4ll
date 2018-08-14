@@ -13,6 +13,8 @@ typedef struct NIpv4llEventNode NIpv4llEventNode;
 #define _cleanup_(_x) __attribute__((__cleanup__(_x)))
 #define _public_ __attribute__((__visibility__("default")))
 
+#define IPV4LL_NETWORK UINT32_C(0xa9fe0000)
+
 struct NIpv4llConfig {
         int ifindex;
         unsigned int transport;

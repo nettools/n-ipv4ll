@@ -1,10 +1,10 @@
 #pragma once
 
 /*
- * IPv4 Link Local Address Configuration
+ * IPv4 Link-Local Address Selection
  *
  * This is the public header of the n-ipv4ll library, implementing Dynamic IPv4
- * Link-Local Address Configuration as described in RFC-3927. This header
+ * Link-Local Address Selection as described in RFC-3927. This header
  * defines the public API and all entry points of n-ipv4ll.
  */
 
@@ -26,7 +26,7 @@ enum {
         N_IPV4LL_E_PREEMPTED,
         N_IPV4LL_E_INVALID_ARGUMENT,
 
-        _N_IPV4LL_E,
+        _N_IPV4LL_E_N,
 };
 
 enum {

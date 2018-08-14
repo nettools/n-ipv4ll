@@ -1,19 +1,17 @@
 /*
- * Dynamic IPv4 Link-Local Address Configuration
+ * IPv4 Link-Local Address Selection
  */
 
 #include <assert.h>
 #include <c-list.h>
 #include <errno.h>
+#include <n-acd.h>
 #include <netinet/if_ether.h>
 #include <netinet/in.h>
-#include <n-acd.h>
 #include <stdlib.h>
 #include <string.h>
 #include "n-ipv4ll.h"
 #include "n-ipv4ll-private.h"
-
-#define IPV4LL_NETWORK UINT32_C(0xa9fe0000)
 
 /**
  * XXX
@@ -115,7 +113,7 @@ static void n_ipv4ll_select_ip(NIpv4ll *ll, struct in_addr *ip) {
         long int result;
         uint16_t offset;
 
-        (void) mrand48_r(&ll->enumeration_state, &result);
+        (void)mrand48_r(&ll->enumeration_state, &result);
 
         /*
          * If mrand48_r had produced a perfect random distribution
