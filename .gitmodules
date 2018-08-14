@@ -7,9 +7,6 @@
 [submodule "subprojects/c-rbtree"]
 	path = subprojects/c-rbtree
 	url = https://github.com/c-util/c-rbtree.git
-[submodule "subprojects/c-sundry"]
-	path = subprojects/c-sundry
-	url = https://github.com/c-util/c-sundry.git
 [submodule "subprojects/n-acd"]
 	path = subprojects/n-acd
 	url = https://github.com/nettools/n-acd.git

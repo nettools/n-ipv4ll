@@ -3,7 +3,6 @@
  * Set up a bridge, connect one veth link per instance, and run
  * IPv4LL on all of them at the same time.
  */
-#include <c-macro.h>
 #include <c-rbtree.h>
 #include <stdlib.h>
 #include <sys/epoll.h>
@@ -66,7 +65,7 @@ static void client_set_ip(Client *client, struct in_addr ip) {
 
 static int client_compare(CRBTree *t, void *k, CRBNode *rb) {
         struct in_addr *ip = k;
-        Client *client = c_container_of(rb, Client, rb);
+        Client *client = c_rbnode_entry(rb, Client, rb);
 
         if (ip->s_addr < client->ip.s_addr)
                 return -1;

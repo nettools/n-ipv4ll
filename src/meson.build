@@ -64,5 +64,5 @@ test('API Symbol Visibility', test_api)
 test_basic = executable('test-basic', ['test-basic.c'], dependencies: libnipv4ll_dep)
 test('Basic API Behavior', test_basic)
 
-test_concurrent = executable('test-concurrent', ['test-concurrent.c'], dependencies: [dep_crbtree, dep_csundry, libnipv4ll_dep])
+test_concurrent = executable('test-concurrent', ['test-concurrent.c'], dependencies: [dep_crbtree, libnipv4ll_dep])
 test('Concurrent IPv4LL probing', test_concurrent)
