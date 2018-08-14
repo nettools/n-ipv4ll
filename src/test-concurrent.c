@@ -76,10 +76,9 @@ static int client_compare(CRBTree *t, void *k, CRBNode *rb) {
         return 0;
 }
 
-static void test_concurrent(void) {
+static void test_concurrent(unsigned int n_clients) {
         CRBTree client_tree = C_RBTREE_INIT;
         Client *client, *client_safe;
-        unsigned int n_clients = 16;
         int r, epoll_fd;
 
         epoll_fd = epoll_create1(EPOLL_CLOEXEC);
@@ -160,7 +159,7 @@ int main(int argc, char **argv) {
 
         test_create_bridge();
 
-        test_concurrent();
+        test_concurrent(16);
 
         return 0;
 }
