@@ -87,9 +87,17 @@ static inline void n_ipv4ll_config_freep(NIpv4llConfig **configp) {
                 n_ipv4ll_config_free(*configp);
 }
 
+static inline void n_ipv4ll_config_freev(NIpv4llConfig *config) {
+        n_ipv4ll_config_free(config);
+}
+
 static inline void n_ipv4ll_freep(NIpv4ll **ipv4llp) {
         if (*ipv4llp)
                 n_ipv4ll_free(*ipv4llp);
+}
+
+static inline void n_ipv4ll_freev(NIpv4ll *ipv4ll) {
+        n_ipv4ll_free(ipv4ll);
 }
 
 #ifdef __cplusplus

@@ -49,9 +49,11 @@ static void test_api(void) {
                 n_ipv4ll_announce(ipv4ll);
 
                 n_ipv4ll_free(ipv4ll);
+                n_ipv4ll_freev(NULL);
         }
 
         n_ipv4ll_config_free(config);
+        n_ipv4ll_config_freev(NULL);
 }
 
 int main(int argc, char **argv) {
