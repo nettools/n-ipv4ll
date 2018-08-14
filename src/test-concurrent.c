@@ -42,6 +42,7 @@ static void client_new(Client **clientp) {
         n_ipv4ll_config_set_mac(config, (const uint8_t *)&mac.ether_addr_octet, ETH_ALEN);
         n_ipv4ll_config_set_timeout(config, 100);
         n_ipv4ll_config_set_enumeration(config, enumerations++);
+        n_ipv4ll_config_set_requested_ip(config, (struct in_addr){ htobe32(UINT32_C(0xa9fe0100)) });
 
         r = n_ipv4ll_new(&client->ipv4ll, config);
         assert(!r);
