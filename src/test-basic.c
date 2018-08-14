@@ -43,7 +43,7 @@ static void test_basic(int ifindex, uint8_t *mac, size_t n_mac) {
                 assert(!r);
                 if (event) {
                         assert(event->event == N_IPV4LL_EVENT_READY);
-                        assert(event->ready.ip.s_addr == htobe32((169 << 24) | (254 << 16) | (149 << 8) | 109));
+                        assert(event->ready.ip.s_addr == htobe32((169 << 24) | (254 << 16) | (95 << 8) | 230));
 
                         break;
                 }
@@ -62,7 +62,7 @@ int main(int argc, char **argv) {
 
         test_veth_new(&ifindex, &mac, NULL, NULL);
         test_add_child_ip(&(struct in_addr){ htobe32((169 << 24) | (254 << 16) | (1 << 8)) });
-        test_add_child_ip(&(struct in_addr){ htobe32((169 << 24) | (254 << 16) | (2 << 8)) });
+        test_add_child_ip(&(struct in_addr){ htobe32((169 << 24) | (254 << 16) | (149 << 8) | 109) });
 
         test_basic(ifindex, mac.ether_addr_octet, sizeof(mac.ether_addr_octet));
 
