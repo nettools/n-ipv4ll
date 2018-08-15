@@ -317,15 +317,13 @@ static int n_ipv4ll_handle_acd_event(NIpv4ll *ipv4ll, NAcdEvent *event) {
                 n_acd_probe_config_set_ip(ipv4ll->config, ipv4ll->ip);
 
                 r = n_acd_probe(ipv4ll->acd, &ipv4ll->probe, ipv4ll->config);
-                if (!r)
-                        return 0;
+                if (r) {
+                        if (r > 0)
+                                r = -ENOTRECOVERABLE;
+                        return r;
+                }
 
-                /*
-                 * Failed to restart ACD. Give up and report the
-                 * failure to the caller.
-                 */
-
-                /* fall-through */
+                break;
         case N_ACD_EVENT_DOWN:
                 r = n_ipv4ll_raise(ipv4ll, NULL, N_IPV4LL_EVENT_DOWN);
                 if (r < 0)
