@@ -150,12 +150,7 @@ static void test_concurrent(unsigned int n_clients) {
 }
 
 int main(int argc, char **argv) {
-        int r;
-
-        r = test_setup();
-        if (r)
-                return r;
-
+        test_setup();
         test_create_bridge();
 
         test_concurrent(16);

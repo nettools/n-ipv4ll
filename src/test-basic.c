@@ -54,11 +54,9 @@ static void test_basic(int ifindex, uint8_t *mac, size_t n_mac) {
 
 int main(int argc, char **argv) {
         struct ether_addr mac;
-        int r, ifindex;
+        int ifindex;
 
-        r = test_setup();
-        if (r)
-                return r;
+        test_setup();
 
         test_veth_new(&ifindex, &mac, NULL, NULL);
         test_add_child_ip(&(struct in_addr){ htobe32((169 << 24) | (254 << 16) | (1 << 8)) });
