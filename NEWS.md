@@ -1,6 +1,6 @@
-n-ipv4ll - IPv4 Link-Local Address Selection
+# n-ipv4ll - IPv4 Link-Local Address Selection
 
-CHANGES WITH 1:
+## CHANGES WITH 1:
 
         * Initial release of n-ipv4ll. This project provides the libnipv4ll
           library, implementing IPv4 Link-Local Address Selection as defined in
