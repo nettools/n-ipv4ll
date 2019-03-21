@@ -1,5 +1,18 @@
 # n-ipv4ll - IPv4 Link-Local Address Selection
 
+## CHANGES WITH 2:
+
+        * Pull in latest n-acd updates (up to n-acd-2).
+
+        * Document the API with in-source comments. This includes documentation
+          for all API entry points as well as an introduction.
+
+        * Make the test-suite more robust and allow running as non-root.
+
+        Contributions from: David Rheinsberg
+
+        - Tübingen, 2019-03-21
+
 ## CHANGES WITH 1:
 
         * Initial release of n-ipv4ll. This project provides the libnipv4ll
