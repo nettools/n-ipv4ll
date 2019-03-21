@@ -8,5 +8,6 @@ cd "./ci-build"
 
 ${CHERRY_LIB_MESONSETUP} . "${CHERRY_LIB_SRCDIR}"
 ${CHERRY_LIB_NINJABUILD}
-${CHERRY_LIB_MESONTEST}
+# need root to raise MEMLOCK limits
+sudo ${CHERRY_LIB_MESONTEST}
 # no valgrind tests, since bpf(2) is not supported by it
