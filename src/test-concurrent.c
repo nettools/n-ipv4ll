@@ -3,7 +3,9 @@
  * Set up a bridge, connect one veth link per instance, and run
  * IPv4LL on all of them at the same time.
  */
+
 #include <c-rbtree.h>
+#include <c-stdaux.h>
 #include <stdlib.h>
 #include <sys/epoll.h>
 #include "test.h"
@@ -28,13 +30,13 @@ static void client_new(Client **clientp) {
         struct ether_addr mac;
 
         client = malloc(sizeof(*client));
-        assert(client);
+        c_assert(client);
         *client = (Client)CLIENT_INIT(*client);
 
         test_add_bridge_slave(&client->ifindex, &mac);
 
         r = n_ipv4ll_config_new(&config);
-        assert(!r);
+        c_assert(!r);
 
         n_ipv4ll_config_set_ifindex(config, client->ifindex);
         n_ipv4ll_config_set_transport(config, N_IPV4LL_TRANSPORT_ETHERNET);
@@ -44,20 +46,20 @@ static void client_new(Client **clientp) {
         n_ipv4ll_config_set_requested_ip(config, (struct in_addr){ htobe32(UINT32_C(0xa9fe0100)) });
 
         r = n_ipv4ll_new(&client->ipv4ll, config);
-        assert(!r);
+        c_assert(!r);
 
         *clientp = client;
 }
 
 static void client_free(Client *client) {
-        assert(!c_rbnode_is_linked(&client->rb));
+        c_assert(!c_rbnode_is_linked(&client->rb));
         n_ipv4ll_free(client->ipv4ll);
         free(client);
 }
 
 static void client_set_ip(Client *client, struct in_addr ip) {
-        assert(be32toh(ip.s_addr) >= UINT32_C(0xa9fe0100));
-        assert(be32toh(ip.s_addr) <= UINT32_C(0xa9fefeff));
+        c_assert(be32toh(ip.s_addr) >= UINT32_C(0xa9fe0100));
+        c_assert(be32toh(ip.s_addr) <= UINT32_C(0xa9fefeff));
 
         test_add_ip(client->ifindex, &ip);
         client->ip = ip;
@@ -81,7 +83,7 @@ static void test_concurrent(unsigned int n_clients) {
         int r, epoll_fd;
 
         epoll_fd = epoll_create1(EPOLL_CLOEXEC);
-        assert(epoll_fd >= 0);
+        c_assert(epoll_fd >= 0);
 
         for (unsigned int i = 0; i < n_clients; ++i) {
                 int fd;
@@ -89,10 +91,10 @@ static void test_concurrent(unsigned int n_clients) {
                 client_new(&client);
 
                 n_ipv4ll_get_fd(client->ipv4ll, &fd);
-                assert(fd >= 0);
+                c_assert(fd >= 0);
 
                 r = epoll_ctl(epoll_fd, EPOLL_CTL_ADD, fd, &(struct epoll_event){ .events = EPOLLIN, .data = { .ptr = client } });
-                assert(r >= 0);
+                c_assert(r >= 0);
         }
 
         for (;;) {
@@ -100,7 +102,7 @@ static void test_concurrent(unsigned int n_clients) {
                 int n;
 
                 n = epoll_wait(epoll_fd, events, 256, -1);
-                assert(n >= 0);
+                c_assert(n >= 0);
 
                 for (int i = 0; i < n; ++i) {
                         NIpv4llEvent *event;
@@ -109,22 +111,22 @@ static void test_concurrent(unsigned int n_clients) {
 
                         r = n_ipv4ll_dispatch(client->ipv4ll);
                         if (r)
-                                assert(r == N_IPV4LL_E_PREEMPTED);
+                                c_assert(r == N_IPV4LL_E_PREEMPTED);
 
                         do {
                                 r = n_ipv4ll_pop_event(client->ipv4ll, &event);
                                 if (event) {
                                         CRBNode **slot, *parent;
 
-                                        assert(event->event == N_IPV4LL_EVENT_READY);
+                                        c_assert(event->event == N_IPV4LL_EVENT_READY);
 
                                         slot = c_rbtree_find_slot(&client_tree, client_compare, &client->ip, &parent);
-                                        assert(slot);
+                                        c_assert(slot);
                                         c_rbtree_add(&client_tree, parent, slot, &client->rb);
 
                                         client_set_ip(client, event->ready.ip);
                                         r = n_ipv4ll_announce(client->ipv4ll);
-                                        assert(r >= 0);
+                                        c_assert(r >= 0);
 
                                         --n_clients;
                                 }
@@ -141,7 +143,7 @@ static void test_concurrent(unsigned int n_clients) {
                 n_ipv4ll_get_fd(client->ipv4ll, &fd);
 
                 r = epoll_ctl(epoll_fd, EPOLL_CTL_DEL, fd, NULL);
-                assert(r >= 0);
+                c_assert(r >= 0);
 
                 client_free(client);
         }
