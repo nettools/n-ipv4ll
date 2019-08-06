@@ -6,6 +6,7 @@ libnipv4ll_symfile = join_paths(meson.current_source_dir(), 'libnipv4ll.sym')
 
 libnipv4ll_deps = [
         dep_clist,
+        dep_cstdaux,
         dep_nacd,
 ]
 
