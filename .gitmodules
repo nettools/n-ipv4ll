@@ -10,3 +10,6 @@
 [submodule "subprojects/n-acd"]
 	path = subprojects/n-acd
 	url = https://github.com/nettools/n-acd.git
+[submodule "subprojects/c-stdaux"]
+	path = subprojects/c-stdaux
+	url = https://github.com/c-util/c-stdaux.git
