@@ -4,62 +4,65 @@
  * n-ipv4ll library.
  */
 
+#undef NDEBUG
+#include <assert.h>
+#include <inttypes.h>
 #include <stdlib.h>
-#include "test.h"
+#include "n-ipv4ll.h"
 
-static void test_api(void) {
-        NIpv4llConfig *config = NULL;
-        NIpv4ll *ipv4ll = NULL;
-        int r;
+static void test_api_constants(void) {
+        assert(1 + _N_IPV4LL_E_SUCCESS);
+        assert(1 + N_IPV4LL_E_PREEMPTED);
+        assert(1 + N_IPV4LL_E_INVALID_ARGUMENT);
+        assert(1 + _N_IPV4LL_E_N);
 
-        assert(N_IPV4LL_E_PREEMPTED);
-        assert(N_IPV4LL_E_INVALID_ARGUMENT);
+        assert(1 + N_IPV4LL_TRANSPORT_ETHERNET);
+        assert(1 + _N_IPV4LL_TRANSPORT_N);
 
-        assert(N_IPV4LL_TRANSPORT_ETHERNET != _N_IPV4LL_TRANSPORT_N);
+        assert(1 + N_IPV4LL_EVENT_READY);
+        assert(1 + N_IPV4LL_EVENT_DEFENDED);
+        assert(1 + N_IPV4LL_EVENT_CONFLICT);
+        assert(1 + N_IPV4LL_EVENT_DOWN);
+        assert(1 + _N_IPV4LL_EVENT_N);
+}
 
-        assert(N_IPV4LL_EVENT_READY != _N_IPV4LL_EVENT_N);
-        assert(N_IPV4LL_EVENT_DEFENDED != _N_IPV4LL_EVENT_N);
-        assert(N_IPV4LL_EVENT_CONFLICT != _N_IPV4LL_EVENT_N);
-        assert(N_IPV4LL_EVENT_DOWN != _N_IPV4LL_EVENT_N);
+static void test_api_types(void) {
+        assert(sizeof(NIpv4llEvent*));
+        assert(sizeof(NIpv4llConfig*));
+        assert(sizeof(NIpv4ll*));
+}
 
-        n_ipv4ll_config_freep(&config);
+static void test_api_functions(void) {
+        void *fns[] = {
+                (void *)n_ipv4ll_config_new,
+                (void *)n_ipv4ll_config_free,
+                (void *)n_ipv4ll_config_freep,
+                (void *)n_ipv4ll_config_freev,
+                (void *)n_ipv4ll_config_set_ifindex,
+                (void *)n_ipv4ll_config_set_transport,
+                (void *)n_ipv4ll_config_set_mac,
+                (void *)n_ipv4ll_config_set_enumeration,
+                (void *)n_ipv4ll_config_set_timeout,
+                (void *)n_ipv4ll_config_set_requested_ip,
 
-        r = n_ipv4ll_config_new(&config);
-        assert(!r);
+                (void *)n_ipv4ll_new,
+                (void *)n_ipv4ll_free,
+                (void *)n_ipv4ll_freep,
+                (void *)n_ipv4ll_freev,
+                (void *)n_ipv4ll_get_fd,
+                (void *)n_ipv4ll_dispatch,
+                (void *)n_ipv4ll_pop_event,
+                (void *)n_ipv4ll_announce,
+        };
+        size_t i;
 
-        n_ipv4ll_config_set_ifindex(config, 1);
-        n_ipv4ll_config_set_transport(config, N_IPV4LL_TRANSPORT_ETHERNET);
-        n_ipv4ll_config_set_mac(config, (uint8_t[6]){ }, 6);
-        n_ipv4ll_config_set_requested_ip(config, (struct in_addr){ htobe32(UINT32_C(0xa9fe0100)) });
-        n_ipv4ll_config_set_timeout(config, 100);
-        n_ipv4ll_config_set_enumeration(config, 1);
-
-        {
-                NIpv4llEvent *event;
-                int fd;
-
-                n_ipv4ll_free(ipv4ll);
-
-                r = n_ipv4ll_new(&ipv4ll, config);
-                assert(!r);
-
-                n_ipv4ll_get_fd(ipv4ll, &fd);
-                n_ipv4ll_dispatch(ipv4ll);
-                n_ipv4ll_pop_event(ipv4ll, &event);
-                n_ipv4ll_announce(ipv4ll);
-
-                n_ipv4ll_free(ipv4ll);
-                n_ipv4ll_freev(NULL);
-        }
-
-        n_ipv4ll_config_free(config);
-        n_ipv4ll_config_freev(NULL);
+        for (i = 0; i < sizeof(fns) / sizeof(*fns); ++i)
+                assert(!!fns[i]);
 }
 
 int main(int argc, char **argv) {
-        test_setup();
-
-        test_api();
-
+        test_api_constants();
+        test_api_types();
+        test_api_functions();
         return 0;
 }

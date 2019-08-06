@@ -153,7 +153,7 @@ int main(int argc, char **argv) {
         test_setup();
         test_create_bridge();
 
-        test_concurrent(16);
+        test_concurrent(8);
 
         return 0;
 }
