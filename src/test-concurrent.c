@@ -78,9 +78,10 @@ static int client_compare(CRBTree *t, void *k, CRBNode *rb) {
 }
 
 static void test_concurrent(unsigned int n_clients) {
+        _c_cleanup_(c_closep) int epoll_fd = -1;
         CRBTree client_tree = C_RBTREE_INIT;
         Client *client, *client_safe;
-        int r, epoll_fd;
+        int r;
 
         epoll_fd = epoll_create1(EPOLL_CLOEXEC);
         c_assert(epoll_fd >= 0);
@@ -147,8 +148,6 @@ static void test_concurrent(unsigned int n_clients) {
 
                 client_free(client);
         }
-
-        close(epoll_fd);
 }
 
 int main(int argc, char **argv) {
