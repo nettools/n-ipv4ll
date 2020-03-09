@@ -81,6 +81,7 @@ static void test_concurrent(unsigned int n_clients) {
         _c_cleanup_(c_closep) int epoll_fd = -1;
         CRBTree client_tree = C_RBTREE_INIT;
         Client *client, *client_safe;
+        struct epoll_event eevent;
         int r;
 
         epoll_fd = epoll_create1(EPOLL_CLOEXEC);
@@ -94,7 +95,11 @@ static void test_concurrent(unsigned int n_clients) {
                 n_ipv4ll_get_fd(client->ipv4ll, &fd);
                 c_assert(fd >= 0);
 
-                r = epoll_ctl(epoll_fd, EPOLL_CTL_ADD, fd, &(struct epoll_event){ .events = EPOLLIN, .data = { .ptr = client } });
+                eevent = (struct epoll_event){
+                        .events = EPOLLIN,
+                        .data = { .ptr = client },
+                };
+                r = epoll_ctl(epoll_fd, EPOLL_CTL_ADD, fd, &eevent);
                 c_assert(r >= 0);
         }
 
