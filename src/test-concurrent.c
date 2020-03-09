@@ -24,8 +24,8 @@ typedef struct Client {
         }
 
 static void client_new(Client **clientp) {
+        _c_cleanup_(n_ipv4ll_config_freep) NIpv4llConfig *config = NULL;
         Client *client;
-        NIpv4llConfig *config;
         int r;
         struct ether_addr mac;
 
